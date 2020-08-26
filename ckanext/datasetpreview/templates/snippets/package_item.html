@@ -1,0 +1,56 @@
+{% ckan_extends %}
+
+{% block resources %}
+  {% if package.resources and not hide_resources %}
+    {% block resources_outer %}
+      <ul class="dataset-resources list-unstyled">
+        {% block resources_inner %}
+          {% for resource in h.dict_list_reduce(package.resources, 'format') %}
+          <li>
+            <a href="{{ h.url_for(controller='package', action='read', id=package.name) }}" class="label label-default" data-format="{{ resource.lower() }}">{{ resource }}</a>
+          </li>
+          {% endfor %}
+        {% endblock %}
+      </ul>
+      <div id="chart_div_{{ package.name }}"></div>
+
+      <script type="text/javascript">
+        
+        var chart_width = document.getElementsByClassName('dataset-item')[0].offsetWidth;
+
+        // Load the Visualization API and the corechart package.
+        google.charts.load('current', {'packages':['corechart']});
+  
+        // Set a callback to run when the Google Visualization API is loaded.
+        google.charts.setOnLoadCallback(drawChart);
+  
+        // Callback that creates and populates a data table,
+        // instantiates the pie chart, passes in the data and
+        // draws it.
+        function drawChart() {
+  
+          // Create the data table.
+          var data = new google.visualization.DataTable();
+          data.addColumn('string', 'Topping');
+          data.addColumn('number', 'Slices');
+          data.addRows([
+            ['Mushrooms', 3],
+            ['Onions', 1],
+            ['Olives', 1],
+            ['Zucchini', 1],
+            ['Pepperoni', 2]
+          ]);
+  
+          // Set chart options
+          var options = {'title':'How Much Pizza I Ate Last Night',
+                         'width': chart_width,
+                         'height':250};
+  
+          // Instantiate and draw our chart, passing in some options.
+          var chart = new google.visualization.PieChart(document.getElementById('chart_div_{{ package.name }}'));
+          chart.draw(data, options);
+        }
+      </script>
+    {% endblock %}
+  {% endif %}
+{% endblock %}
