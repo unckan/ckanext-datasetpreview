@@ -1,0 +1,2 @@
+# CKAN dataset preview
+
