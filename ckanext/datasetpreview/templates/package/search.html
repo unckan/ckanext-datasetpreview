@@ -4,3 +4,60 @@
     {{ super() }}
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 {% endblock %}
+
+{% block secondary_content %}
+    {{ super() }}
+    
+    {# Common JS for all previews #}
+    
+    <script type="text/javascript">
+        
+        var chart_width = document.getElementsByClassName('dataset-item')[0].offsetWidth;
+
+        // Load the Visualization API and the corechart package.
+        google.charts.load('current', {'packages':['corechart']});
+  
+        // Set a callback to run when the Google Visualization API is loaded.
+        google.charts.setOnLoadCallback(drawAll);
+  
+        function drawAll() {
+  
+        var names = []
+        {% for package in c.page.items %}
+            {% if h.get_preview_chart_data(package) %}
+                names.push("{{ package.name }}");
+            {% endif %}
+        {% endfor %}
+
+          // Create the data table.
+          var data = new google.visualization.DataTable();
+          data.addColumn('string', 'Topping');
+          data.addColumn('number', 'Slices');
+          data.addRows([
+            ['Mushrooms', 3],
+            ['Onions', 1],
+            ['Olives', 1],
+            ['Zucchini', 1],
+            ['Pepperoni', 2]
+          ]);
+  
+          // Set chart options
+          var options = {'title':'How Much Pizza I Ate Last Night',
+                         'width': chart_width,
+                         'height':250};
+  
+          
+        {% for package in c.page.items %}
+            {% if h.get_preview_chart_data(package) %}
+var chart = new google.visualization.PieChart(document.getElementById('chart_div_{{ package.name }}'));
+chart.draw(data, options);
+            {% endif %}
+        {% endfor %}
+            
+            
+        }
+      </script>
+
+    
+
+{% endblock %}
