@@ -3,6 +3,8 @@
 {% block meta %}
     {{ super() }}
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-csv/0.8.9/jquery.csv.js"></script>
 {% endblock %}
 
 {% block secondary_content %}
@@ -11,51 +13,65 @@
     {# Common JS for all previews #}
     
     <script type="text/javascript">
-        
-        var chart_width = document.getElementsByClassName('dataset-item')[0].offsetWidth;
+        var jq_ready = false;
+        var charts_ready = false;
+
+        $( document ).ready(function() {
+            jq_ready = true;
+            if (charts_ready) {drawAll();}
+        });
 
         // Load the Visualization API and the corechart package.
         google.charts.load('current', {'packages':['corechart']});
-  
+        var preview_datas = {};
         // Set a callback to run when the Google Visualization API is loaded.
-        google.charts.setOnLoadCallback(drawAll);
-  
-        function drawAll() {
-  
-        var names = []
-        {% for package in c.page.items %}
-            {% if h.get_preview_chart_data(package) %}
-                names.push("{{ package.name }}");
-            {% endif %}
-        {% endfor %}
-
-          // Create the data table.
-          var data = new google.visualization.DataTable();
-          data.addColumn('string', 'Topping');
-          data.addColumn('number', 'Slices');
-          data.addRows([
-            ['Mushrooms', 3],
-            ['Onions', 1],
-            ['Olives', 1],
-            ['Zucchini', 1],
-            ['Pepperoni', 2]
-          ]);
-  
-          // Set chart options
-          var options = {'title':'How Much Pizza I Ate Last Night',
-                         'width': chart_width,
-                         'height':250};
-  
-          
-        {% for package in c.page.items %}
-            {% if h.get_preview_chart_data(package) %}
-var chart = new google.visualization.PieChart(document.getElementById('chart_div_{{ package.name }}'));
-chart.draw(data, options);
-            {% endif %}
-        {% endfor %}
-            
-            
+        google.charts.setOnLoadCallback(charts_is_ready);
+        
+        function charts_is_ready() {
+            charts_ready = true;
+            if (jq_ready) {drawAll();}
         }
+
+        function drawAll() {
+
+            var chart_width = document.getElementsByClassName('dataset-item')[0].offsetWidth;
+    
+            {% for package in c.page.items %}
+            {% set preview_data = h.get_preview_chart_data(package) %}
+                {% if preview_data %}
+
+                let new_data = {{ preview_data|safe }};
+                preview_datas['{{ package.name }}'] = new_data;
+                load_preview(new_data, '{{ package.name }}');
+
+                {% endif %}
+            {% endfor %}
+        }
+
+function load_preview(preview_data, package_name) {
+    
+    $.get(preview_data.url, function(csvString) {
+        // transform the CSV string into a 2-dimensional array
+        var arrayData = $.csv.toArrays(csvString, {onParseValue: $.csv.hooks.castToScalar});
+
+        // this new DataTable object holds all the data
+        var data = new google.visualization.arrayToDataTable(arrayData);
+        // CAPACITY - En-route ATFM delay - YY - CHART
+        var viz = new google.visualization.ChartWrapper({
+            chartType: 'LineChart',
+            containerId: 'chart_div_' + package_name,
+            dataTable: data,
+            options:{
+                'title': preview_data.chart_title,
+                'width': chart_width,
+                'height': preview_data.height
+                }
+        });
+        viz.draw();
+
+        });
+    }
+
       </script>
 
     
