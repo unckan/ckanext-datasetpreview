@@ -5,10 +5,7 @@ sudo cp ckan/ckan/config/solr/schema.xml /etc/solr/conf/schema.xml
 sudo service jetty restart
 
 nosetests --ckan \
-          --nologcapture \
+          --debug=ckanext.siu_harvester \
           --with-pylons=subdir/test.ini \
-          --with-coverage \
-          --cover-package=ckanext.datasetpreview \
-          --cover-inclusive \
-          --cover-erase \
-          --cover-tests
+          ckanext/datasetpreview/tests
+          
