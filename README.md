@@ -15,7 +15,7 @@ Uses `messytables` to discover field types.
 
 ## How to set up?
 
-```json
+```js
 extras["dataset_preview"] = {
     "fields": ["Field1", "Field2"],
     "chart_type": "Bar", // Allows 'Pie', 'Bar', 'Column'
