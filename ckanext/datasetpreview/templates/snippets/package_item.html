@@ -14,7 +14,7 @@
       </ul>
       
       {# JUST adds a div in case we will preview a resource #}
-      {% if h.get_preview_chart_data(package) %}
+      {% if h.package_preview(package) %}
       <div id="chart_div_{{ package.name }}"></div>
       {% endif %}
 

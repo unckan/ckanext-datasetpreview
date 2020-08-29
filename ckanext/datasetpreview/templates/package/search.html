@@ -23,7 +23,7 @@
 
         // Load the Visualization API and the corechart package.
         google.charts.load('current', {'packages':['corechart']});
-        var preview_datas = {};
+        
         // Set a callback to run when the Google Visualization API is loaded.
         google.charts.setOnLoadCallback(charts_is_ready);
         
@@ -35,43 +35,49 @@
         function drawAll() {
 
             var chart_width = document.getElementsByClassName('dataset-item')[0].offsetWidth;
-    
+            var new_data;
             {% for package in c.page.items %}
-            {% set preview_data = h.get_preview_chart_data(package) %}
+                {% set preview_data = h.get_preview_chart_data(package) %}
                 {% if preview_data %}
-
-                let new_data = {{ preview_data|safe }};
-                preview_datas['{{ package.name }}'] = new_data;
+                new_data = {{ preview_data|safe }};
+                new_data.chart_width = chart_width;
                 load_preview(new_data, '{{ package.name }}');
-
                 {% endif %}
             {% endfor %}
         }
 
 function load_preview(preview_data, package_name) {
     
-    $.get(preview_data.url, function(csvString) {
-        // transform the CSV string into a 2-dimensional array
-        var arrayData = $.csv.toArrays(csvString, {onParseValue: $.csv.hooks.castToScalar});
+    console.log(preview_data.data)
 
-        // this new DataTable object holds all the data
-        var data = new google.visualization.arrayToDataTable(arrayData);
-        // CAPACITY - En-route ATFM delay - YY - CHART
-        var viz = new google.visualization.ChartWrapper({
-            chartType: 'LineChart',
-            containerId: 'chart_div_' + package_name,
-            dataTable: data,
-            options:{
-                'title': preview_data.chart_title,
-                'width': chart_width,
-                'height': preview_data.height
-                }
+    var data = new google.visualization.DataTable();
+    var headers = preview_data.headers;
+    for (var i=0; i < headers.length; i++) {
+        data.addColumn(headers[i][1], headers[i][0]);
+        }
+
+    data.addRows(preview_data.data);
+    
+    if (preview_data.chart_type == 'Pie') {chart_type = 'PieChart'}
+    else if (preview_data.chart_type == 'Column') {chart_type = 'ColumnChart'}
+    else if (preview_data.chart_type == 'Bar') {chart_type = 'BarChart'}
+    else {chart_type = 'ColumnChart'}
+        
+    var viz = new google.visualization.ChartWrapper({
+        chartType: chart_type,
+        containerId: 'chart_div_' + package_name,
+        dataTable: data,
+        options:{
+            'title': '',  // preview_data.chart_title,
+            'width': preview_data.chart_width,
+            'height': preview_data.height,
+            'legend': 'none',
+            'color': preview_data.chart_color,
+            }
         });
         viz.draw();
 
-        });
     }
-
       </script>
 
     
