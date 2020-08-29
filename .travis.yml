@@ -6,7 +6,7 @@ services:
     - postgresql
     - redis-server
 install:
-    - pip install dev-requirements.txt
+    - pip install -r dev-requirements.txt
     - bash bin/travis-build.bash
     
 script: sh bin/travis-run.sh
