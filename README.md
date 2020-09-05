@@ -15,6 +15,20 @@ Uses `messytables` to discover field types.
 
 ## How to set up?
 
+### General extension config values
+
+Available config options
+
+```ini
+# Define if the extension should draw chart for
+# - 'ALL'    All datasets with a CSV resource
+# - 'EXTRA' Just datasets with the 'dataset_preview' extra dictionary defined
+# - 'NO'     No datasets with show any preview
+ckanext.datasetpreview.draw = 'ALL'  # default draw all
+ckanext.datasetpreview.chart_height = 300  # pixels
+
+```
+
 ```js
 extras["dataset_preview"] = {
     "fields": ["Field1", "Field2"],

@@ -18,7 +18,8 @@ class DatasetpreviewPlugin(plugins.SingletonPlugin):
         cache_folder = os.path.join(storage_path, 'data_preview_cache')
         if not os.path.isdir(cache_folder):
             os.mkdir(cache_folder)
-        config_['dataset_preview_cache_path'] = cache_folder
+        # this folder will be used to save path of CSV files locally
+        config_['ckanext.datasetpreview.cache_path'] = cache_folder
 
     def configure(self, config):
         self.config = config

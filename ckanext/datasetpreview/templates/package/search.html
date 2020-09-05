@@ -72,7 +72,7 @@ function load_preview(preview_data, package_name) {
             'width': preview_data.chart_width,
             'height': preview_data.height,
             'legend': 'none',
-            'color': preview_data.chart_color,
+            'colors': [preview_data.chart_color],
             }
         });
         viz.draw();
