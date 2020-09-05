@@ -28,16 +28,26 @@ ckanext.datasetpreview.draw = 'ALL'  # default draw all
 ckanext.datasetpreview.chart_height = 300  # pixels
 
 ```
+Each dataset could add and extra value with nthe key `dataset_preview`:
 
 ```js
 extras["dataset_preview"] = {
-    "fields": ["Field1", "Field2"],
+    // field to use in the chart. Could be:
+    // - A list of field names (valids in the CSV resource)
+    // Default will be [0, 1] ( the first two columns in the CSV). You could use numbers instead of field names
+    "fields": ["Field1", "Field2"],  
     "chart_type": "Bar", // Allows 'Pie', 'Bar', 'Column'
-    "url": "Use only if you want specific CSV, if not it takes the first CSV resource",
+    // URL could be:
+    // - A external url
+    // - No use this value: will be "csv_resource" with pick the first CSV resource in the dataset
+    // - Name of the resource in the datasets (must be a CSV one)
+    "url": "csv_resource",
     "height": 450,  // pixels
+    "chart_color": "#AA5521"
 }
 ```
 If you don't setup each dataset it will show the first CSV resource in the dataset (using the first two columns)
 
 
 ![dataset-list](ckanext/datasetpreview/captures/dataset-list.png)
+![dataset-list](ckanext/datasetpreview/captures/chart-config.png)
