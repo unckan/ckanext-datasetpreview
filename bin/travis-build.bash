@@ -33,8 +33,9 @@ paster db init -c test-core.ini
 cd -
 
 echo "Installing ckanext-datasetpreview and its requirements..."
-python setup.py develop
+pip install -r requirements.txt
 pip install -r dev-requirements.txt
+python setup.py develop
 
 echo "Moving test.ini into a subdir..."
 mkdir subdir
