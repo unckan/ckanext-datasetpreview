@@ -14,7 +14,8 @@ class DatasetpreviewPlugin(plugins.SingletonPlugin):
         toolkit.add_resource('fanstatic', 'datasetpreview')
 
         # define a cache folder for CSV
-        storage_path = config_.get('ckan.storage_path')
+        here = os.path.abspath(os.path.dirname(__file__))
+        storage_path = config_.get('ckan.storage_path', here)
         cache_folder = os.path.join(storage_path, 'data_preview_cache')
         if not os.path.isdir(cache_folder):
             os.mkdir(cache_folder)
