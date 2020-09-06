@@ -11,6 +11,7 @@ install:
     
 script: sh bin/travis-run.sh
 deploy:
+    provider: pypi
     username: "$PYPI_USER"
     password: "$PYPI_PASSWORD"
     distributions: "sdist bdist_wheel"
