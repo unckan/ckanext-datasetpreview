@@ -18,13 +18,14 @@ def package_preview(pkg_dict):
 
     draw = config.get('ckanext.datasetpreview.draw', 'ALL')
 
-    if draw is ['NO', 'none', 'false']:
+    if draw.lower() in ['no', 'none', 'false']:
         return False
     
+    dataset_name = unicode(pkg_dict['name']).encode("utf-8")
     base = {
-            'name': unicode(pkg_dict['name']).encode("utf-8"),
+            'name': dataset_name,
             'height': config.get('ckanext.datasetpreview.chart_height', '300'),
-            'chart_title': '',  # we already have the title in the list
+            'chart_title':  '',  # we already have the title in the list
             'chart_type': random.choice(['Bar', 'Bar', 'Bar', 'Column', 'Column', 'Pie']),
             'chart_color': random.choice(['#303030', '#707070', '#AABBCC']),
             'url': 'csv_resource',  # lazy URL, use the first available CSV resource. Could use the resource['name'] instead
@@ -35,7 +36,14 @@ def package_preview(pkg_dict):
     # sample config: {"chart_type": "Bar", "chart_color": "#FF00AA"}
     for extra in pkg_dict['extras']:
         if extra['key'] == 'dataset_preview':
-            existing_config = json.loads(extra['value'])
+            preview = unicode(extra['value']).encode("utf-8")
+            preview = preview.replace("'", "\"").replace("u\"", "\"")
+            preview = preview.replace("\"[", "[").replace("]\"", "]")
+            try:
+                existing_config = json.loads(preview)
+            except Exception as e:
+                log.error('Invalid JSON from dataset {}. \n\tORIGIN {}: \n\tJSON{}'.format(dataset_name, extra['value'], preview))
+                existing_config = False
 
     if draw != 'ALL' and not existing_config:
         return False
