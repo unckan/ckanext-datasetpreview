@@ -36,23 +36,31 @@ def package_preview(pkg_dict):
     # sample config: {"chart_type": "Bar", "chart_color": "#FF00AA"}
     for extra in pkg_dict['extras']:
         if extra['key'] == 'dataset_preview':
-            preview = unicode(extra['value']).encode("utf-8")
-            preview = preview.replace("'", "\"").replace("u\"", "\"")
-            preview = preview.replace("\"[", "[").replace("]\"", "]")
+            preview = force_unicode_json(extra['value'])
             try:
                 existing_config = json.loads(preview)
             except Exception as e:
                 log.error('Invalid JSON from dataset {}. \n\tORIGIN {}: \n\tJSON{}'.format(dataset_name, extra['value'], preview))
                 existing_config = False
+            else:
+                log.info('Existing config {}\n\t{}'.format(pkg_dict['name'], existing_config))
 
     if draw != 'ALL' and not existing_config:
         return False
 
     if existing_config:
+        log.info('Updating config {} \n\t{}\n\t{}'.format(pkg_dict['name'], base, existing_config))
         base.update(existing_config)
+        log.info('Updated config {}'.format(base))
+        
 
     return json.dumps(base)
 
+def force_unicode_json(data):
+    data = unicode(data).encode("utf-8")
+    data = data.replace("'", "\"").replace("u\"", "\"")
+    # data = data.replace("\"[", "[").replace("]\"", "]")
+    return data
 
 def get_preview_chart_data(pkg_dict):
     """
