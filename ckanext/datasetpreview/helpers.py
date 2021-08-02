@@ -4,7 +4,7 @@ import logging
 import os
 import random
 import requests
-from pylons import config
+from ckan.common import config
 from messytables import CSVTableSet, type_guess, \
   types_processor, headers_guess, headers_processor, \
   offset_processor
