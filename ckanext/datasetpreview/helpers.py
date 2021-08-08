@@ -21,7 +21,7 @@ def package_preview(pkg_dict):
     if draw.lower() in ['no', 'none', 'false']:
         return False
     
-    dataset_name = unicode(pkg_dict['name']).encode("utf-8")
+    dataset_name = pkg_dict['name']
     base = {
             'name': dataset_name,
             'height': config.get('ckanext.datasetpreview.chart_height', '300'),
@@ -57,9 +57,7 @@ def package_preview(pkg_dict):
     return json.dumps(base)
 
 def force_unicode_json(data):
-    data = unicode(data).encode("utf-8")
     data = data.replace("'", "\"").replace("u\"", "\"")
-    # data = data.replace("\"[", "[").replace("]\"", "]")
     return data
 
 def get_preview_chart_data(pkg_dict):
@@ -72,9 +70,8 @@ def get_preview_chart_data(pkg_dict):
         return False
     log.info('Dataset preview found for{}: {}'.format(pkg_dict['name'], dp))
     
-    cfg = json.loads(dp)
-    
-    data = {unicode(k).encode("utf-8"): unicode(v).encode("utf-8") for k, v in cfg.iteritems()}
+    data = json.loads(dp)
+
     # some fields requires to be dumped
     data['fields'] = json.loads(data['fields'])
     
@@ -86,12 +83,12 @@ def get_preview_chart_data(pkg_dict):
             for resource in pkg_dict['resources']:
                 if resource['format'].lower() == 'csv':
                     data_found = True
-                    data['url'] = unicode(resource['url']).encode("utf-8")
+                    data['url'] = resource['url']
         else: # could by a resource name
             for resource in pkg_dict['resources']:
                 if resource['name'] == data['url']:
                     data_found = True
-                    data['url'] = unicode(resource['url']).encode("utf-8")
+                    data['url'] = resource['url']
         
         if not data_found:
             return False
@@ -133,7 +130,7 @@ def csv_as_data(url, fields):
     for header in headers:
         # if fields is like [0, 1] check for "c"
         # if fields is like ["field1", "field2"] check the header name
-        h = unicode(header).encode("utf-8")
+        h = header
         if c in fields or h in fields:
             if type(types[c]) == IntegerType:
                 final_headers.append([h, 'number'])
@@ -159,7 +156,7 @@ def csv_as_data(url, fields):
             # if fields is like ["field1", "field2"] check the header name
             if c in numeric_used_fields:
                 if type(val.type) == StringType:
-                    v = unicode(val.value).encode("utf-8")
+                    v = val.value
                 elif type(val.type) == DecimalType:
                     v = float(val.value)
                 elif type(val.type) == IntegerType:
@@ -186,7 +183,7 @@ def csv_url_to_path(url):
 def get_cache_path(url):
     """ get cache path from URL """
     cache_folder = config['ckanext.datasetpreview.cache_path']
-    name = hashlib.sha1(url).hexdigest()
+    name = hashlib.sha1(url.encode('utf-8')).hexdigest()
     path = os.path.join(cache_folder, '{}.csv'.format(name))
     log.info('DataPreview cache path {}'.format(path))
     return path
@@ -194,8 +191,9 @@ def get_cache_path(url):
 
 def save_cache(url, path):
     """ save online CSV locally """
+    log.info('Saving dataset preview {} {}'.format(url, path))
     try:
-        response = requests.get(url, allow_redirects=True)
+        response = requests.get(url, allow_redirects=True, timeout=5)
     except Exception as e:
         log.error('Error getting URL {}: {}'.format(url, str(e)))
         return None

@@ -36,12 +36,17 @@
 
             var chart_width = document.getElementsByClassName('dataset-item')[0].offsetWidth;
             var new_data;
+            // items :{{ c.page.items }}.
             {% for package in c.page.items %}
+                // Preview:{{ preview_data }}.
+                // package: {{ package.name }}
                 {% set preview_data = h.get_preview_chart_data(package) %}
                 {% if preview_data %}
                 new_data = {{ preview_data|safe }};
                 new_data.chart_width = chart_width;
                 load_preview(new_data, '{{ package.name }}');
+                {% else %}
+                // No preview data for {{ package.name }}
                 {% endif %}
             {% endfor %}
         }

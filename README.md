@@ -28,7 +28,7 @@ ckanext.datasetpreview.draw = 'ALL'  # default draw all
 ckanext.datasetpreview.chart_height = 300  # pixels
 
 ```
-Each dataset could add and extra value with nthe key `dataset_preview`:
+Each dataset could add and extra value with the key `dataset_preview`:
 
 ```js
 extras["dataset_preview"] = {
