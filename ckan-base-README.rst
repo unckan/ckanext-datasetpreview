@@ -2,11 +2,11 @@
    these badges work. The necessary Travis and Coverage config files have been
    generated for you.
 
-.. image:: https://travis-ci.org/avdata99/ckanext-datasetpreview.svg?branch=master
-    :target: https://travis-ci.org/avdata99/ckanext-datasetpreview
+.. image:: https://travis-ci.org/unckan/ckanext-datasetpreview.svg?branch=master
+    :target: https://travis-ci.org/unckan/ckanext-datasetpreview
 
-.. image:: https://coveralls.io/repos/avdata99/ckanext-datasetpreview/badge.svg
-  :target: https://coveralls.io/r/avdata99/ckanext-datasetpreview
+.. image:: https://coveralls.io/repos/unckan/ckanext-datasetpreview/badge.svg
+  :target: https://coveralls.io/r/unckan/ckanext-datasetpreview
 
 .. image:: https://pypip.in/download/ckanext-datasetpreview/badge.svg
     :target: https://pypi.python.org/pypi//ckanext-datasetpreview/
@@ -90,7 +90,7 @@ Development Installation
 To install ckanext-datasetpreview for development, activate your CKAN virtualenv and
 do::
 
-    git clone https://github.com/avdata99/ckanext-datasetpreview.git
+    git clone https://github.com/unckan/ckanext-datasetpreview.git
     cd ckanext-datasetpreview
     python setup.py develop
     pip install -r dev-requirements.txt

@@ -1,10 +1,9 @@
-[![Travis (.org)](https://img.shields.io/travis/avdata99/ckanext-datasetpreview?style=for-the-badge)](https://travis-ci.org/github/avdata99/ckanext-datasetpreview)
-[![GitHub All Releases](https://img.shields.io/github/downloads/avdata99/ckanext-datasetpreview/total?style=for-the-badge)](https://github.com/avdata99/ckanext-datasetpreview/releases)
-[![GitHub Issues](https://img.shields.io/github/issues/avdata99/ckanext-datasetpreview?style=for-the-badge)](https://github.com/avdata99/ckanext-datasetpreview/issues)
-[![GitHub PR](https://img.shields.io/github/issues-pr/avdata99/ckanext-datasetpreview?style=for-the-badge)](https://github.com/avdata99/ckanext-datasetpreview/pulls)
-[![Licence](https://img.shields.io/github/license/avdata99/ckanext-datasetpreview?style=for-the-badge)](https://github.com/avdata99/ckanext-datasetpreview/blob/master/LICENSE)
+[![GitHub All Releases](https://img.shields.io/github/downloads/unckan/ckanext-datasetpreview/total?style=for-the-badge)](https://github.com/unckan/ckanext-datasetpreview/releases)
+[![GitHub Issues](https://img.shields.io/github/issues/unckan/ckanext-datasetpreview?style=for-the-badge)](https://github.com/unckan/ckanext-datasetpreview/issues)
+[![GitHub PR](https://img.shields.io/github/issues-pr/unckan/ckanext-datasetpreview?style=for-the-badge)](https://github.com/unckan/ckanext-datasetpreview/pulls)
+[![Licence](https://img.shields.io/github/license/unckan/ckanext-datasetpreview?style=for-the-badge)](https://github.com/unckan/ckanext-datasetpreview/blob/master/LICENSE)
 [![Pypi py version](https://img.shields.io/pypi/pyversions/ckanext-datasetpreview?style=for-the-badge)](https://pypi.org/project/ckanext-datasetpreview/)
-[![Last Commit](https://img.shields.io/github/last-commit/avdata99/ckanext-datasetpreview?style=for-the-badge)](https://github.com/avdata99/ckanext-datasetpreview/commits/master)
+[![Last Commit](https://img.shields.io/github/last-commit/unckan/ckanext-datasetpreview?style=for-the-badge)](https://github.com/unckan/ckanext-datasetpreview/commits/master)
 
 # CKAN dataset preview
 
